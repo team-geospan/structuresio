@@ -1,6 +1,6 @@
 # GEOSPAN StructuresIO
 
-JavaScript utilities for working with the [StructuresJSON]() format.
+JavaScript utilities for working with the [StructuresJSON](https://github.com/team-geospan/structures-json) format.
 
 ## Installation
 

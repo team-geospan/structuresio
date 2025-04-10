@@ -1,11 +1,44 @@
 {
-  "name": "@geospan/structuresio",
-  "version": "0.0.1",
-  "description": "Collection of utilities for converting and rendering StructuresJSON objects",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "@team-geospan/structuresio",
+  "version": "0.0.4",
+  "description": "Collection of utilities for working with StructuresJSON",
+  "type": "module",
+  "exports": {
+    "./*": "./lib/*"
   },
-  "author": "",
+  "files": [
+    "./lib"
+  ],
+  "scripts": {
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0 ./tests ./lib --ext .js",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest ./tests",
+    "coverage": "vitest ./tests --coverage"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "vitest": "^3.1.1"
+  },
+  "author": "GEOSPAN Corp",
   "license": "Apache-2.0"
 }

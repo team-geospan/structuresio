@@ -16,7 +16,11 @@
 
 import { describe, it, expect } from "vitest";
 
-import { toLineStringGeoJSON, toPolygonGeoJSON } from "../lib/geojson.js";
+import {
+  simplifyRing,
+  toLineStringGeoJSON,
+  toPolygonGeoJSON,
+} from "../lib/geojson.js";
 import { BASIC_PLANAR_STRUCTURE } from "./fixtures/basic.js";
 
 describe("Converts StructuresJSON to GeoJSON", () => {
@@ -64,9 +68,9 @@ describe("Converts StructuresJSON to GeoJSON", () => {
     expect(feature.geometry.coordinates).toEqual([
       [
         [1, 0, 1],
-        [1, 1, 1],
-        [0, 1, 0],
         [0, 0, 0],
+        [0, 1, 0],
+        [1, 1, 1],
         [1, 0, 1],
       ],
     ]);
@@ -82,5 +86,39 @@ describe("Converts StructuresJSON to GeoJSON", () => {
     const resultB = toPolygonGeoJSON(collection);
 
     expect(resultA).toEqual(resultB);
+  });
+});
+
+describe("simplifyRing tests", () => {
+  it("Handles an empty ring", () => {
+    expect(simplifyRing([])).toEqual([]);
+  });
+
+  it("Handles a ring that is impossible to solve", () => {
+    const goodRing = [
+      ["a", "b"],
+      ["b", "c"],
+      ["c", "a"],
+    ];
+    const badRing = [
+      ["a", "b"],
+      // the "d" point will not match to anything
+      ["b", "d"],
+      ["c", "a"],
+    ];
+
+    expect(simplifyRing(goodRing)).toEqual(["a", "b", "c", "a"]);
+
+    // it tries but this is really an invalid polygon...
+    expect(simplifyRing(badRing).length).toEqual(3);
+  });
+
+  it("Handles a jumbled set of ring constraints", () => {
+    const jumble = [
+      ["b", "a"],
+      ["c", "a"],
+      ["b", "c"],
+    ];
+    expect(simplifyRing(jumble)).toEqual(["b", "a", "c", "b"]);
   });
 });
